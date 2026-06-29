@@ -1,0 +1,114 @@
+import { useState } from "react";
+import { useLocation } from "wouter";
+import { clearToken } from "@/lib/api";
+import { usePlanColors } from "@/contexts/plan-colors-context";
+import { FileSpreadsheet, Search, Package, FileText, Sparkles, Calculator } from "lucide-react";
+
+export default function ZaizToolsPage() {
+  const [location, navigate] = useLocation();
+  const { getPlanColor } = usePlanColors();
+
+  const handleLogout = () => {
+    clearToken();
+    navigate("/");
+  };
+
+  const tools = [
+    {
+      id: 'adobe-pdf-excel',
+      title: 'PDF to Excel (ZaiZ Engine)',
+      description: 'Convert PDF to Excel using the official ZaiZ online converter engine.',
+      icon: FileSpreadsheet,
+      price: 'Premium',
+      action: () => { navigate('/tools/pdf-to-excel'); }
+    },
+    {
+      id: 'adobe-pdf-word',
+      title: 'PDF to Word (ZaiZ Engine)',
+      description: 'Convert PDF to Word using the official ZaiZ online converter engine.',
+      icon: FileText,
+      price: 'Premium',
+      action: () => { navigate('/tools/pdf-to-word'); }
+    },
+    {
+      id: 'zaiz-pdf-extractor',
+      title: 'ZaiZ PDF Extractor',
+      description: 'Extract PDF to Excel or Word — supports tables, invoices, bank statements and reports.',
+      icon: FileSpreadsheet,
+      price: 'Premium',
+      action: () => { navigate('/pdf-converter'); }
+    },
+    {
+      id: 'gst-calculator',
+      title: 'GST Calculator',
+      description: 'Calculate GST (CGST, SGST, IGST) values with standard rate presets or custom inputs.',
+      icon: Calculator,
+      price: 'Free',
+      action: () => { navigate('/tools/gst-calculator'); }
+    },
+    {
+      id: 'tds-interest-calculator',
+      title: 'TDS Interest Calculator',
+      description: 'Calculate interest on late deduction/payment (Sec 201(1A)) and late filing fees (Sec 234E).',
+      icon: Calculator,
+      price: 'Free',
+      action: () => { navigate('/tools/tds-interest-calculator'); }
+    },
+    {
+      id: 'income-tax-calculator',
+      title: 'Income Tax Calculator',
+      description: 'Compare Old vs New Tax Regime side-by-side with custom details for FY 2026-27.',
+      icon: Calculator,
+      price: 'Free',
+      action: () => { navigate('/tools/income-tax-calculator'); }
+    },
+  ];
+
+  return (
+    <div>
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-foreground">ZaiZ Tools</h1>
+          <p className="text-sm text-muted-foreground mt-1">High-performance document extraction, PDF converters, and smart utility engines</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tools.map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <div key={tool.id} className="bg-card border border-card-border rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow flex flex-col">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                    <Icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-foreground">{tool.title}</h3>
+                    <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${tool.price === 'Free'
+                        ? 'bg-green-100 text-green-700'
+                        : tool.price === 'Coming Soon'
+                          ? 'bg-yellow-100 text-yellow-700'
+                          : 'bg-blue-100 text-blue-700'
+                      }`}>
+                      {tool.price}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-muted-foreground mb-6 flex-1 min-h-[4.5rem] line-clamp-3">{tool.description}</p>
+                <button
+                  onClick={tool.action}
+                  disabled={tool.price === 'Coming Soon'}
+                  className={`w-full px-4 py-2.5 rounded-lg font-medium transition-colors ${tool.price === 'Coming Soon'
+                      ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                      : 'bg-[#6b8cc4] text-white hover:bg-[#5c7ab5]'
+                    }`}
+                >
+                  {tool.price === 'Coming Soon' ? 'Coming Soon' : 'Use Tool'}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </main>
+    </div>
+  );
+}
