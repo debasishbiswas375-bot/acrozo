@@ -347,7 +347,7 @@ def _zaiz_email_wrapper(preheader: str, body_html: str) -> str:
               <a href="mailto:support@acrozo.eu.cc" style="color:#4a6cf7;text-decoration:none;">support@acrozo.eu.cc</a>
             </p>
             <p style="margin:0;font-size:11px;color:#9ca3af;">
-              &copy; 2026 Acrozo &mdash; Advanced Core Reliable Operations<br/>
+              &copy; 2025 Acrozo &mdash; Advanced Core Reliable Operations<br/>
               <a href="https://acrozo.eu.cc/privacy" style="color:#9ca3af;text-decoration:underline;">Privacy Policy</a>
               &nbsp;&middot;&nbsp;
               <a href="https://acrozo.eu.cc/terms" style="color:#9ca3af;text-decoration:underline;">Terms of Service</a>

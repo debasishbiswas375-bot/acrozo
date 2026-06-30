@@ -180,7 +180,7 @@ export default function Footer() {
         {/* Copyright notice */}
         <div className="pt-1 pb-1">
           <p className="text-[11px] text-center text-body-color dark:text-body-color-dark">
-            © {new Date().getFullYear()} Acrozo by Debasish Biswas. All rights reserved.
+            © 2025 Acrozo by Debasish Biswas. All rights reserved.
           </p>
         </div>
 
