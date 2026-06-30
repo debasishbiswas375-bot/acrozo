@@ -4145,6 +4145,36 @@ async def startup_event():
     except Exception as e:
         logger.warning(f"Database initialization failed (continuing anyway): {e}")
     logger.info("✅ Render backend started (Bank→ERP proxied to HF Space)")
+    asyncio.create_task(_keep_alive_loop())
+
+# ── Keep-alive: ping HF Spaces (and self) every 5 minutes so they don't sleep ─
+_KEEP_ALIVE_INTERVAL_SECONDS = 300  # 5 minutes
+
+def _keep_alive_targets() -> list:
+    targets = []
+    if HF_SPACE_URL:
+        targets.append(HF_SPACE_URL.rstrip("/"))
+    if HF_TALLY_ENGINE_URL:
+        targets.append(HF_TALLY_ENGINE_URL.rstrip("/"))
+    # Render sets this automatically on deployed services; ping self too so the
+    # backend itself doesn't idle-sleep on free/sleep-tier plans.
+    self_url = os.getenv("RENDER_EXTERNAL_URL", "").rstrip("/")
+    if self_url:
+        targets.append(self_url)
+    return targets
+
+async def _keep_alive_loop():
+    await asyncio.sleep(10)  # let the app finish booting first
+    async with _aiohttp.ClientSession(timeout=_aiohttp.ClientTimeout(total=20)) as session:
+        while True:
+            targets = _keep_alive_targets()
+            for url in targets:
+                try:
+                    async with session.get(url) as resp:
+                        logger.info(f"[keep-alive] {url} -> {resp.status}")
+                except Exception as e:
+                    logger.warning(f"[keep-alive] {url} failed: {e}")
+            await asyncio.sleep(_KEEP_ALIVE_INTERVAL_SECONDS)
 
 # ==========================================
 # SERVE REACT FRONTEND (Must be at the bottom)
