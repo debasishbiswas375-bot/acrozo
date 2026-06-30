@@ -237,8 +237,8 @@ _captcha_store: Dict[str, str] = {}
 
 # ─── Brevo (Sendinblue) Email Configuration ───────────────────────────────────
 BREVO_API_KEY  = os.getenv("BREVO_API_KEY", "")
-BREVO_SENDER_EMAIL = os.getenv("BREVO_SENDER_EMAIL", "no-reply@zaiz.in")
-BREVO_SENDER_NAME  = os.getenv("BREVO_SENDER_NAME", "ZaiZ")
+BREVO_SENDER_EMAIL = os.getenv("BREVO_SENDER_EMAIL", "no-reply@acrozo.eu.cc")
+BREVO_SENDER_NAME  = os.getenv("BREVO_SENDER_NAME", "Acrozo")
 
 def send_brevo_email(to_email: str, to_name: str, subject: str, html_content: str) -> bool:
     """Send a transactional email via Brevo API. Returns True on success."""
@@ -269,8 +269,8 @@ def send_brevo_email(to_email: str, to_name: str, subject: str, html_content: st
         logger.error(f"[BREVO] ❌ Exception sending email: {e}")
         return False
 
-# ─── ZaiZ Email Template Helpers ─────────────────────────────────────────────
-_ZAIZ_SITE  = os.getenv("FRONTEND_URL", "https://zaiz.in")
+# ─── Acrozo Email Template Helpers ─────────────────────────────────────────────
+_ZAIZ_SITE  = os.getenv("FRONTEND_URL", "https://acrozo.eu.cc")
 _ZAIZ_DARK  = "#1a1a2e"
 _ZAIZ_TEXT  = "#4a4a68"
 _ZAIZ_MUTED = "#9898b0"
@@ -297,8 +297,8 @@ def _zaiz_cta(label: str, url: str) -> str:
     )
 
 _ZAIZ_LOGO_IMG = (
-    '<a href="https://zaiz.eu.cc" target="_blank" style="text-decoration:none;display:block;">'
-    + '<img src="https://zaiz.eu.cc/mail-logo.jpg" alt="ZaiZ" width="100%" style="display:block;border:0;width:100%;max-width:520px;" />'
+    '<a href="https://acrozo.eu.cc" target="_blank" style="text-decoration:none;display:block;">'
+    + '<img src="https://acrozo.eu.cc/mail-logo.png" alt="Acrozo" width="100%" style="display:block;border:0;width:100%;max-width:520px;" />'
     + '</a>'
 )
 
@@ -322,7 +322,7 @@ def _zaiz_email_wrapper(preheader: str, body_html: str) -> str:
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <title>ZaiZ</title>
+  <title>Acrozo</title>
   <!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
   {_ZAIZ_EMAIL_STYLES}
 </head>
@@ -344,13 +344,13 @@ def _zaiz_email_wrapper(preheader: str, body_html: str) -> str:
           <td style="padding:24px 32px;text-align:center;">
             <p style="margin:0 0 6px;font-size:12px;color:#6b7280;">
               Questions? Reply to this email or contact
-              <a href="mailto:support@zaiz.eu.cc" style="color:#4a6cf7;text-decoration:none;">support@zaiz.eu.cc</a>
+              <a href="mailto:support@acrozo.eu.cc" style="color:#4a6cf7;text-decoration:none;">support@acrozo.eu.cc</a>
             </p>
             <p style="margin:0;font-size:11px;color:#9ca3af;">
-              &copy; 2025 ZaiZ &mdash; Smart Accounting Tools for India<br/>
-              <a href="https://zaiz.eu.cc/privacy" style="color:#9ca3af;text-decoration:underline;">Privacy Policy</a>
+              &copy; 2026 Acrozo &mdash; Advanced Core Reliable Operations<br/>
+              <a href="https://acrozo.eu.cc/privacy" style="color:#9ca3af;text-decoration:underline;">Privacy Policy</a>
               &nbsp;&middot;&nbsp;
-              <a href="https://zaiz.eu.cc/terms" style="color:#9ca3af;text-decoration:underline;">Terms of Service</a>
+              <a href="https://acrozo.eu.cc/terms" style="color:#9ca3af;text-decoration:underline;">Terms of Service</a>
             </p>
           </td>
         </tr>
@@ -399,7 +399,7 @@ def email_register_otp(username: str, otp: str) -> str:
     """Email 1 — Registration OTP."""
     body = f"""
       <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0f172a;">
-        Welcome to ZaiZ! &#127881;
+        Welcome to Acrozo! &#127881;
       </h2>
       <p style="margin:0 0 6px;font-size:15px;color:#374151;">
         Hi <strong>{username}</strong>,
@@ -411,11 +411,11 @@ def email_register_otp(username: str, otp: str) -> str:
       {_zaiz_otp_html(otp)}
       <p style="margin:20px 0 0;font-size:13px;color:#6b7280;line-height:1.6;">
         &#128274;&nbsp; For your security, never share this code with anyone.<br/>
-        If you did not create a ZaiZ account, you can safely ignore this email.
+        If you did not create an Acrozo account, you can safely ignore this email.
       </p>
-      {_zaiz_cta_html("Go to ZaiZ", "https://zaiz.eu.cc")}"""
+      {_zaiz_cta_html("Go to Acrozo", "https://acrozo.eu.cc")}"""
     return _zaiz_email_wrapper(
-        f"Your ZaiZ registration code is {otp} — valid for 10 minutes.",
+        f"Your Acrozo registration code is {otp} — valid for 10 minutes.",
         body
     )
 
@@ -429,17 +429,17 @@ def email_verify_email_otp(username: str, otp: str) -> str:
         Hi <strong>{username}</strong>,
       </p>
       <p style="margin:0 0 20px;font-size:15px;color:#374151;line-height:1.6;">
-        Use the code below to verify your email address on ZaiZ.
+        Use the code below to verify your email address on Acrozo.
         This code expires in <strong>10&nbsp;minutes</strong>.
       </p>
       {_zaiz_otp_html(otp)}
       <p style="margin:20px 0 0;font-size:13px;color:#6b7280;line-height:1.6;">
-        &#128274;&nbsp; Never share this code. ZaiZ staff will never ask for it.<br/>
+        &#128274;&nbsp; Never share this code. Acrozo staff will never ask for it.<br/>
         If you did not request this, please ignore this email.
       </p>
-      {_zaiz_cta_html("Open ZaiZ", "https://zaiz.eu.cc")}"""
+      {_zaiz_cta_html("Open Acrozo", "https://acrozo.eu.cc")}"""
     return _zaiz_email_wrapper(
-        f"Your ZaiZ email verification code: {otp}",
+        f"Your Acrozo email verification code: {otp}",
         body
     )
 
@@ -453,7 +453,7 @@ def email_password_reset_otp(username: str, otp: str) -> str:
         Hi <strong>{username}</strong>,
       </p>
       <p style="margin:0 0 20px;font-size:15px;color:#374151;line-height:1.6;">
-        We received a request to reset your ZaiZ password. Enter the
+        We received a request to reset your Acrozo password. Enter the
         code below to proceed. It expires in <strong>15&nbsp;minutes</strong>.
       </p>
       {_zaiz_otp_html(otp)}
@@ -466,7 +466,7 @@ def email_password_reset_otp(username: str, otp: str) -> str:
       </div>
 """
     return _zaiz_email_wrapper(
-        "Your ZaiZ password reset code — valid for 15 minutes.",
+        "Your Acrozo password reset code — valid for 15 minutes.",
         body
     )
 
@@ -482,7 +482,7 @@ def email_admin_broadcast(username: str, subject: str, body_lines: list) -> str:
         Hi <strong>{username}</strong>,
       </p>
       {paragraphs}
-      {_zaiz_cta_html("Visit ZaiZ", "https://zaiz.eu.cc")}"""
+      {_zaiz_cta_html("Visit Acrozo", "https://acrozo.eu.cc")}"""
     return _zaiz_email_wrapper(subject, body)
 
 # ── Debug: test Brevo email (remove in production) ───────────────────────────
@@ -492,7 +492,7 @@ async def test_email(to: str = "debasish.biswas375@gmail.com"):
     key_preview = BREVO_API_KEY[:20] + "..." if BREVO_API_KEY else "(NOT SET)"
     if not BREVO_API_KEY:
         return {"ok": False, "error": "BREVO_API_KEY is not set in zaiz.env", "key_preview": key_preview, "sender": BREVO_SENDER_EMAIL}
-    sent = send_brevo_email(to, "ZaiZ User", "ZaiZ Email Test", "<p>If you see this, Brevo is working! 🎉</p>")
+    sent = send_brevo_email(to, "Acrozo User", "Acrozo Email Test", "<p>If you see this, Brevo is working! 🎉</p>")
     return {"ok": sent, "key_preview": key_preview, "sender": BREVO_SENDER_EMAIL, "to": to}
 
 # NOTE: test_history endpoint moved to after get_current_user is defined (see below)
@@ -1327,7 +1327,7 @@ async def register(data: RegisterRequest):
     }
 
     html = email_register_otp(data.username, otp)
-    sent = send_brevo_email(data.email, data.username, "Your ZaiZ registration OTP", html)
+    sent = send_brevo_email(data.email, data.username, "Your Acrozo registration OTP", html)
     if not sent:
         raise HTTPException(500, "Failed to send OTP email. Please try again.")
 
@@ -1394,7 +1394,7 @@ async def send_verify_email_otp(data: SendVerifyEmailOTPRequest):
         "username": data.username,
     }
     html = email_verify_email_otp(data.username, otp)
-    sent = send_brevo_email(data.email, data.username, "Verify your ZaiZ email address", html)
+    sent = send_brevo_email(data.email, data.username, "Verify your Acrozo email address", html)
     if not sent:
         raise HTTPException(500, "Failed to send verification email. Please try again.")
     return {"success": True, "message": "Verification OTP sent to your email."}
@@ -2011,7 +2011,7 @@ async def forgot_password(req: ForgotPasswordRequest):
 
     username = user["username"]
     html = email_password_reset_otp(username, otp)
-    sent = send_brevo_email(req.email, username, "Your ZaiZ password reset OTP", html)
+    sent = send_brevo_email(req.email, username, "Your Acrozo password reset OTP", html)
     if not sent:
         raise HTTPException(500, "Failed to send reset email. Please try again.")
 
@@ -3191,7 +3191,7 @@ async def admin_notify(data: dict, cu: dict = Depends(get_current_user)):
         # ── Optional Brevo email ────────────────────────────────
         email_results = {"sent": 0, "failed": 0}
         if data.get("send_email"):
-            subject = (data.get("email_subject") or title or "Message from ZaiZ").strip()
+            subject = (data.get("email_subject") or title or "Message from Acrozo").strip()
             _lines = [line for line in msg.replace("\r\n", "\n").split("\n") if line.strip()]
 
             if broadcast:
