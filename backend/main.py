@@ -12,7 +12,7 @@ Tech Stack: Python, FastAPI, PostgreSQL, Pydantic
 
 import os
 from dotenv import load_dotenv
-load_dotenv(os.path.join(os.path.dirname(__file__), "zaiz.env"), override=True)
+load_dotenv(os.path.join(os.path.dirname(__file__), "zaiz.env"))  # local fallback only; real env vars (e.g. Render dashboard) take priority
 import jwt
 import bcrypt
 import logging
