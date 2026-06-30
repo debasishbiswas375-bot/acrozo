@@ -76,9 +76,10 @@ if sys.platform.startswith("win"):
 # HF Bucket Storage Configuration
 # All files are stored directly in the deba3666/zaiz HF bucket.
 # No local disk is used — works cleanly on Render (no persistent disk needed).
-HF_SPACE_URL = os.getenv("HF_SPACE_URL", "https://deba3666-zaiz.hf.space").rstrip("/")
-HF_TOKEN     = os.getenv("HF_TOKEN", "")
-HF_BUCKET_ID = os.getenv("HF_BUCKET_ID", "deba3666/zaiz")   # namespace/bucket-name
+HF_SPACE_URL  = os.getenv("HF_SPACE_URL", "https://deba3666-zaiz.hf.space").rstrip("/")
+HF_TOKEN      = os.getenv("HF_TOKEN", "")
+HF_BUCKET_ID  = os.getenv("HF_BUCKET_ID", "deba3666/zaiz")   # namespace/bucket-name (zaiz PDF→Excel/Word)
+HF_XML_BUCKET = os.getenv("HF_XML_BUCKET", "deba3666/acrozo")  # namespace/bucket-name (Tally XML engine)
 
 # MinerU API Configuration
 MINERU_API_KEY = os.getenv("MINERU_API_KEY", "")
@@ -621,6 +622,13 @@ def _upload_to_bucket_sync(file_content: bytes, file_path: str):
     logger.info(f"[HF] ✅ Uploaded to bucket: {bucket_path}")
 
 
+def _bucket_for_path(file_path: str) -> str:
+    """Tally XML engine writes to a separate bucket (HF_XML_BUCKET) from the
+    rest of the app (HF_BUCKET_ID). Route reads/deletes to the right one
+    based on the path so /api/bucket/files/* works for both features."""
+    return HF_XML_BUCKET if "/tally_xml/" in file_path else HF_BUCKET_ID
+
+
 def _read_from_bucket_sync(file_path: str) -> bytes:
     """Synchronous HF bucket read via HfFileSystem."""
     if HfFileSystem is None:
@@ -628,7 +636,7 @@ def _read_from_bucket_sync(file_path: str) -> bytes:
     if not HF_TOKEN:
         raise RuntimeError("HF_TOKEN is not set — cannot read from bucket")
     fs = HfFileSystem(token=HF_TOKEN)
-    bucket_path = f"hf://buckets/{HF_BUCKET_ID}/{file_path}"
+    bucket_path = f"hf://buckets/{_bucket_for_path(file_path)}/{file_path}"
     with fs.open(bucket_path, "rb") as fh:
         return fh.read()
 
